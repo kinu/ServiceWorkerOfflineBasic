@@ -2,7 +2,7 @@ importScripts('serviceworker-cache-polyfill.js');
 
 self.oninstall = function(event) {
   event.waitUntil(
-    caches.open('statics-v2').then(function(cache) {
+    caches.open('statics-v3').then(function(cache) {
       return cache.addAll([
         '/',
         '/page.js',
@@ -14,11 +14,11 @@ self.oninstall = function(event) {
 };
 
 self.onactivate = function(event) {
-  event.waitUntil(caches.delete('statics-v3'));
+  event.waitUntil(caches.delete('statics-v2'));
 };
 
 self.onfetch = function(event) {
-  console.log('FETCHING:' + event.request.url);
+  console.log('FETCHING: ' + event.request.url);
 
   /*
   // 画像だったら nyancat の画像にさしかえる
@@ -36,9 +36,11 @@ self.onfetch = function(event) {
   // (2) キャッシュになかったらネットワークにfallback:
   event.respondWith(
     caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+      return response || fetch(event.request).then(function(response) {
           console.log('Fetched:', event.request, response);
-        }));
+        });
+      })
+    );
 
   /*
   // (3) キャッシュになかったらネットワークにfallbackし、レスポンスを
