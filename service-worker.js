@@ -20,11 +20,13 @@ self.onactivate = function(event) {
 self.onfetch = function(event) {
   console.log('FETCHING: ' + event.request.url);
 
+  /*
   // 画像だったら nyancat の画像にさしかえる
   if (event.request.url.toLowerCase().indexOf('.png') != -1) {
     event.respondWith(caches.match('nyancat.png'));
     return;
   }
+  */
 
   /*
   // (1) キャッシュからだけ返す:
