@@ -4,11 +4,11 @@ self.oninstall = function(event) {
   event.waitUntil(
     caches.open('statics-v3').then(function(cache) {
       return cache.addAll([
-        '/',
-        '/page.js',
-        '/nyancat.png',
-        '/offline_icon.png',
-        '/main.css']);
+        'inscope.html',
+        'page.js',
+        'nyancat.png',
+        'offline_icon.png',
+        'main.css']);
     })
   );
 };
@@ -18,11 +18,11 @@ self.onactivate = function(event) {
 };
 
 self.onfetch = function(event) {
-  console.log('FETCHING:' + event.request.url);
+  console.log('FETCHING: ' + event.request.url);
 
   // 画像だったら nyancat の画像にさしかえる
   if (event.request.url.toLowerCase().indexOf('.png') != -1) {
-    event.respondWith(caches.match('/nyancat.png'));
+    event.respondWith(caches.match('nyancat.png'));
     return;
   }
 
@@ -34,9 +34,13 @@ self.onfetch = function(event) {
   // (2) キャッシュになかったらネットワークにfallback:
   event.respondWith(
     caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+      // return response || fetch(event.request);
+      return response || fetch(event.request).then(function(response) {
           console.log('Fetched:', event.request, response);
-        }));
+          return response;
+        });
+      })
+    );
 
   /*
   // (3) キャッシュになかったらネットワークにfallbackし、レスポンスを
