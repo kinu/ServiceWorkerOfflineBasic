@@ -15,7 +15,7 @@ function log(msg) {
   document.querySelector('#log').textContent += msg;
 }
 if (navigator.serviceWorker.controller) {
-  log('このページは ServiceWorker にコントロールされています');
+  log('このページは ServiceWorker にコントロールされています (Try Shift-Reload)');
 } else {
   log('ServiceWorker はいません');
 }
