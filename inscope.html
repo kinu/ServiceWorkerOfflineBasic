@@ -7,7 +7,17 @@
 <body>
   <h1>Service Worker sample</h1>
   <p>ServiceWorker を使ってページをキャッシュするサンプルです。</p>
-  <a href="inscope.html">スコープ内のページを開く</a>
+  <img src="http://www.w3.org/html/logo/downloads/HTML5_Logo_128.png" />
+  <img src="html5j.png" />
   <p id="log"></p>
-  <script type='text/javascript' src='page.js'></script>
+<script>
+function log(msg) {
+  document.querySelector('#log').textContent += msg;
+}
+if (navigator.serviceWorker.controller) {
+  log('このページは ServiceWorker にコントロールされています');
+} else {
+  log('ServiceWorker はいません');
+}
+</script>
 </body>

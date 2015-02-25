@@ -1,14 +1,10 @@
 function log(msg) {
-  document.querySelector('#log').textContent = msg;
+  document.querySelector('#log').textContent += msg;
 }
 
-navigator.serviceWorker.register('./service-worker.js', {scope:'./'})
+navigator.serviceWorker.register('./service-worker.js', {scope:'./inscope.html'})
   .then(function(sw) {
-      if (navigator.serviceWorker.controller) {
-        log('このページは ServiceWorker にコントロールされています');
-      } else {
-        log('ServiceWorker が登録されました');
-      }
+      log('ServiceWorker を登録しました', sw);
     })
   .catch(function(err) {
     log('ServiceWorker の登録に失敗しました: ' + err);
