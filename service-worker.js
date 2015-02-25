@@ -2,7 +2,7 @@ importScripts('serviceworker-cache-polyfill.js');
 
 self.oninstall = function(event) {
   event.waitUntil(
-    caches.open('statics-v3').then(function(cache) {
+    caches.open('statics-v4').then(function(cache) {
       return cache.addAll([
         '/',
         '/page.js',
@@ -14,7 +14,7 @@ self.oninstall = function(event) {
 };
 
 self.onactivate = function(event) {
-  event.waitUntil(caches.delete('statics-v2'));
+  event.waitUntil(caches.delete('statics-v3'));
 };
 
 self.onfetch = function(event) {
