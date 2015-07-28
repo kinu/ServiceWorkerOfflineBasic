@@ -14,6 +14,7 @@ self.oninstall = function(event) {
 };
 
 self.onactivate = function(event) {
+  clients.claim();
   event.waitUntil(caches.delete('statics-v3'));
 };
 
@@ -69,3 +70,32 @@ self.onfetch = function(event) {
   );
   */
 };
+
+//-----------------------------------------------------
+// Added dummy push methods just for testing.
+
+this.addEventListener('push', function(evt) {
+  console.log('on push');
+  var options = {
+    body: 'Push test body',
+    tag: 'chat',
+    icon: 'cat.png'
+  };
+  self.registration.showNotification('Got push message!');
+});
+
+this.addEventListener('notificationclick', function(evt) {
+  console.log('SW notification click');
+
+  evt.waitUntil(clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  }).catch(function(ex) {
+  }).then(function(clientList) {
+    for (var i = 0; i < clientList.length; i++) {
+      var client = clientList[i];
+      return client.focus();
+    }
+    clients.openWindow('/');
+  }));
+});
